@@ -4,27 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".TaskActivity">
 
     <TextView
-        android:id="@+id/H_main"
+        android:id="@+id/H_task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Main Page"
+        android:text="TaskPage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btn_to_task"
+        android:id="@+id/btn_to_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:onClick="onClickToTask"
-        android:text="Task"
+        android:onClick="onClickToMain"
+        android:text="To main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/H_main" />
-
+        app:layout_constraintTop_toBottomOf="@+id/H_task" />
 </androidx.constraintlayout.widget.ConstraintLayout>

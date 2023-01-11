@@ -1,9 +1,11 @@
 package com.example.taskmanagerapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import com.example.taskmanagerapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -13,8 +15,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         MActBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(MActBinding.root)
-
-        MActBinding.tvTest.text = "Check"
+    }
+    fun onClickToTask(viev : View){
+        val intent = Intent(this, TaskActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onStart() {
