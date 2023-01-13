@@ -1,31 +1,38 @@
 package com.example.taskmanagerapp
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.R
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
-import com.example.taskmanagerapp.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatActivity
 import com.example.taskmanagerapp.databinding.ActivityTaskBinding
 
+
 class TaskActivity : AppCompatActivity() {
-    lateinit var TaskActBinding : ActivityTaskBinding
+    lateinit var taskActBinding : ActivityTaskBinding
+    var colorDrawable = ColorDrawable(Color.parseColor("#ffffff"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TaskActBinding = ActivityTaskBinding.inflate(layoutInflater)
-        setContentView(TaskActBinding.root)
+        taskActBinding = ActivityTaskBinding.inflate(layoutInflater)
+        setContentView(taskActBinding.root)
 
-        val header_task = intent.getStringExtra("header_task")
-        TaskActBinding.HTask.text = header_task
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Task"
+        supportActionBar?.setBackgroundDrawable(colorDrawable)
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.home) finish()
+        return true
     }
 
     fun onClickToMain(viev : View){
 //        val intent = Intent(this, MainActivity::class.java)
 //        startActivity(intent)
-
-        val i = Intent()
-        i.putExtra("callback", "Sucess!")
-        setResult(RESULT_OK, i)
         finish()
     }
 }

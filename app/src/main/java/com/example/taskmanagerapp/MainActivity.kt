@@ -1,36 +1,63 @@
 package com.example.taskmanagerapp
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
+import android.text.Html
 import android.view.View
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.example.taskmanagerapp.databinding.ActivityMainBinding
 
+
 class MainActivity : AppCompatActivity() {
-    lateinit var MActBinding : ActivityMainBinding
-    private var launcher : ActivityResultLauncher<Intent>? = null
+    lateinit var mActBinding : ActivityMainBinding
+    var colorDrawable = ColorDrawable(Color.parseColor("#ffffff"))
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MActBinding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(MActBinding.root)
+        mActBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mActBinding.root)
+        supportActionBar?.setBackgroundDrawable(colorDrawable)
 
-        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            result: ActivityResult ->
-            if (result.resultCode == RESULT_OK)
-                MActBinding.HMain.text = result.data?.getStringExtra("callback")
-        }
+
+        //Активируем homebutton
+
+//        pref = getSharedPreferences("TABLE", Context.MODE_PRIVATE)
+//        hLst = pref?.getString("hlst", "noData")!!
     }
+
+
+
     fun onClickToTask(viev : View){
-        launcher?.launch(Intent(this, TaskActivity::class.java))
-        intent.putExtra("header_task", MActBinding.btnToTask.text)
+        val intent = Intent(this, CreateLstActivity::class.java)
         startActivity(intent)
     }
+
+//
+//    fun saveData(hLst: String){
+//        val db_lst = pref?.edit()
+//        db_lst?.putString(hLst, hLst)
+//        db_lst?.apply()
+//    }
+//
+//    fun deleteItem(hLst: String){
+//        val db_lst = pref?.edit()
+//        db_lst?.remove(hLst)
+//        db_lst?.apply()
+//    }
+
+
+
+
+
+
+
+
+
+
 
     override fun onStart() {
         super.onStart()
@@ -44,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }

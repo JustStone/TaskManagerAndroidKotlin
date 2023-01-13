@@ -12,5 +12,8 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="titleTextColor">@android:color/holo_red_dark</item>
+
     </style>
+
 </resources>
