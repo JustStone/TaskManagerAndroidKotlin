@@ -6,34 +6,46 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Html
 import android.view.View
+import android.widget.HorizontalScrollView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.taskmanagerapp.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var mActBinding : ActivityMainBinding
-    var colorDrawable = ColorDrawable(Color.parseColor("#ffffff"))
+//    var colorDrawable = ColorDrawable(Color.parseColor("#ffffff"))
+    private val adapter = ListAdapter()
 
+    private var idOfList = 1;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mActBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mActBinding.root)
-        supportActionBar?.setBackgroundDrawable(colorDrawable)
+
+//        supportActionBar?.setBackgroundDrawable(colorDrawable)
+
+        initRcv()
 
 
-        //Активируем homebutton
 
 //        pref = getSharedPreferences("TABLE", Context.MODE_PRIVATE)
 //        hLst = pref?.getString("hlst", "noData")!!
     }
 
-
-
-    fun onClickToTask(viev : View){
-        val intent = Intent(this, CreateLstActivity::class.java)
-        startActivity(intent)
+    private fun initRcv(){
+        mActBinding.apply {
+            rcLists.layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+            rcLists.adapter = adapter
+            btnAddList.setOnClickListener{
+                val list1 = ListData(idOfList, "Star")
+                adapter.AddList(list1)
+                idOfList++
+            }
+        }
     }
 
 //
