@@ -1,7 +1,10 @@
 package com.example.taskmanagerapp
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,17 +19,25 @@ class MainActivity : AppCompatActivity() {
     private var idOfList = 1;
     private val adapterTask = TaskAdapter()
     private var idOfTask = 1;
-    val Array = ArrayList<TaskData>()
+    val Array = ArrayList<String>()
+
+    private var createTaskLauncher: ActivityResultLauncher<Intent>? = null
 
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mActBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mActBinding.root)
+
         initRcvLists()
         initRcvTasks()
+
+        createTaskLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            if(it.resultCode == RESULT_OK){
+                adapterTask.AddTask(it.data?.getSerializableExtra("tp_task" ) as TaskData)
+            }
+        }
 
 
 
@@ -46,17 +57,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun initRcvTasks(){
         mActBinding.apply {
             rcTasks.layoutManager = GridLayoutManager(this@MainActivity,1 )
             rcTasks.adapter = adapterTask
             btnAddList.setOnClickListener{
-                val task1 = TaskData(idOfTask, true, "Buying", "Buy a car",
-                "add info", LocalDate.now(), Array
-                )
-                adapterTask.AddTask(task1)
-                idOfTask++
+//                val task1 = TaskData(true, "Buying", "Buy a car",
+//                "add info", L, Array
+//                )
+//                adapterTask.AddTask(task1)
+//                idOfTask++
+                createTaskLauncher?.launch(Intent(this@MainActivity, CreateTaskActivity::class.java))
             }
         }
     }

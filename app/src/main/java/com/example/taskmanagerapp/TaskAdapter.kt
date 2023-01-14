@@ -20,7 +20,7 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false)
-        return TaskAdapter.TaskHolder(view)
+        return TaskHolder(view)
     }
 
     override fun onBindViewHolder(holder: TaskHolder, position: Int) {
