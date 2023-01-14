@@ -1,34 +1,32 @@
 package com.example.taskmanagerapp
 
-import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
-import android.text.Html
-import android.view.View
-import android.widget.HorizontalScrollView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.taskmanagerapp.databinding.ActivityMainBinding
+import java.time.LocalDate
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var mActBinding : ActivityMainBinding
-//    var colorDrawable = ColorDrawable(Color.parseColor("#ffffff"))
-    private val adapter = ListAdapter()
-
+    private val adapterList = ListAdapter()
     private var idOfList = 1;
+    private val adapterTask = TaskAdapter()
+    private var idOfTask = 1;
+    val Array = ArrayList<TaskData>()
 
 
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mActBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mActBinding.root)
-
-//        supportActionBar?.setBackgroundDrawable(colorDrawable)
-
-        initRcv()
+        initRcvLists()
+        initRcvTasks()
 
 
 
@@ -36,14 +34,29 @@ class MainActivity : AppCompatActivity() {
 //        hLst = pref?.getString("hlst", "noData")!!
     }
 
-    private fun initRcv(){
+    private fun initRcvLists(){
         mActBinding.apply {
             rcLists.layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
-            rcLists.adapter = adapter
+            rcLists.adapter = adapterList
+//            btnAddList.setOnClickListener{
+//                val list1 = ListData(idOfList, "Star")
+//                adapterList.AddList(list1)
+//                idOfList++
+//            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun initRcvTasks(){
+        mActBinding.apply {
+            rcTasks.layoutManager = GridLayoutManager(this@MainActivity,1 )
+            rcTasks.adapter = adapterTask
             btnAddList.setOnClickListener{
-                val list1 = ListData(idOfList, "Star")
-                adapter.AddList(list1)
-                idOfList++
+                val task1 = TaskData(idOfTask, true, "Buying", "Buy a car",
+                "add info", LocalDate.now(), Array
+                )
+                adapterTask.AddTask(task1)
+                idOfTask++
             }
         }
     }
