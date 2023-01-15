@@ -5,15 +5,12 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.annotation.RequiresApi
 import com.example.taskmanagerapp.databinding.ActivityCreateTaskBinding
 import java.time.LocalDate
 
 class CreateTaskActivity : AppCompatActivity() {
     lateinit var createTaskActBinding : ActivityCreateTaskBinding
-//    private val Array = ArrayList<String>()
-
 
 
     @RequiresApi(Build.VERSION_CODES.O)

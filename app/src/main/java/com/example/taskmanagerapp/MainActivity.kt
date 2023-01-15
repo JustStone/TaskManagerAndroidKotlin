@@ -39,6 +39,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        mActBinding.bottomMenu.setOnItemSelectedListener {
+            when(it.itemId){
+                R.id.addList -> {}
+                R.id.addTask -> {
+                createTaskLauncher?.launch(Intent(this@MainActivity, CreateTaskActivity::class.java))
+                }
+                R.id.deleteList -> {}
+            }
+            true
+        }
+
 
 
 //        pref = getSharedPreferences("TABLE", Context.MODE_PRIVATE)
@@ -49,11 +60,9 @@ class MainActivity : AppCompatActivity() {
         mActBinding.apply {
             rcLists.layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
             rcLists.adapter = adapterList
-//            btnAddList.setOnClickListener{
-//                val list1 = ListData(idOfList, "Star")
-//                adapterList.AddList(list1)
+            val list1 = ListData(idOfList, "Star")
+            adapterList.AddList(list1)
 //                idOfList++
-//            }
         }
     }
 
@@ -61,14 +70,14 @@ class MainActivity : AppCompatActivity() {
         mActBinding.apply {
             rcTasks.layoutManager = GridLayoutManager(this@MainActivity,1 )
             rcTasks.adapter = adapterTask
-            btnAddList.setOnClickListener{
-//                val task1 = TaskData(true, "Buying", "Buy a car",
-//                "add info", L, Array
-//                )
-//                adapterTask.AddTask(task1)
-//                idOfTask++
-                createTaskLauncher?.launch(Intent(this@MainActivity, CreateTaskActivity::class.java))
-            }
+//            btnAddList.setOnClickListener{
+////                val task1 = TaskData(true, "Buying", "Buy a car",
+////                "add info", L, Array
+////                )
+////                adapterTask.AddTask(task1)
+////                idOfTask++
+//                createTaskLauncher?.launch(Intent(this@MainActivity, CreateTaskActivity::class.java))
+//            }
         }
     }
 
