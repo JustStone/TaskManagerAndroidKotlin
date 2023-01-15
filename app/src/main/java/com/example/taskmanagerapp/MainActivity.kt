@@ -82,9 +82,7 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
     }
 
     override fun clickListListener(list : ListData){
-        startActivity(Intent(this@MainActivity, EditLstActivity::class.java).apply {
-            putExtra("tp_click_list", list)
-        })
+
     }
 
 

@@ -15,6 +15,9 @@ class TaskAdapter(val listener: InterfaceTask) : RecyclerView.Adapter<TaskAdapte
         val binding = TaskItemBinding.bind(item)
         fun bind(task: TaskData, listener: InterfaceTask) = with(binding) {
             taskTitle.text = task.taskTitle
+            if (task.taskStar == true){
+                taskItemStar.visibility = View.VISIBLE
+            }
             itemView.setOnClickListener{
                 listener.clickTaskListener(task)
             }
