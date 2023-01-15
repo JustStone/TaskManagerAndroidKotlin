@@ -82,8 +82,9 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
     }
 
     override fun clickListListener(list : ListData){
-        Toast.makeText(this, "go ${list.title}", Toast.LENGTH_LONG).show()
-
+        startActivity(Intent(this@MainActivity, EditLstActivity::class.java).apply {
+            putExtra("tp_click_list", list)
+        })
     }
 
 
