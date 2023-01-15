@@ -44,6 +44,7 @@
                 android:id="@+id/createTaskDateBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:backgroundTint="#AAAAAA"
                 android:text="Add date"
                 android:textColor="#070606" />
 
@@ -51,6 +52,7 @@
                 android:id="@+id/createTasksSubsBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:backgroundTint="#AAAAAA"
                 android:text="Go to subtasks"
                 android:textColor="#070606" />
 

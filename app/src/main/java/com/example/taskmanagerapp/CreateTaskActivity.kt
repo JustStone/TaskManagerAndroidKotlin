@@ -33,9 +33,6 @@ class CreateTaskActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initButtons() = with(createTaskActBinding){
-        createTaskFavorBtn.setOnClickListener{
-            finish()
-        }
         createTaskSaveBtn.setOnClickListener {
             val task : TaskData
             if (createTaskFavorBtn.text == "IMPORTANT"){

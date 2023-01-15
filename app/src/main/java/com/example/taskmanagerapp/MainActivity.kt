@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity() {
     val Array = ArrayList<String>()
 
     private var createTaskLauncher: ActivityResultLauncher<Intent>? = null
+    private var createListLauncher: ActivityResultLauncher<Intent>? = null
+
 
 
 
@@ -39,30 +41,31 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        createListLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            if(it.resultCode == RESULT_OK){
+                adapterList.AddList(it.data?.getSerializableExtra("tp_list" ) as ListData)
+            }
+        }
+
         mActBinding.bottomMenu.setOnItemSelectedListener {
             when(it.itemId){
-                R.id.addList -> {}
+                R.id.addList -> {
+                    createListLauncher?.launch(Intent(this@MainActivity, CreateLstActivity::class.java))
+                }
                 R.id.addTask -> {
-                createTaskLauncher?.launch(Intent(this@MainActivity, CreateTaskActivity::class.java))
+                    createTaskLauncher?.launch(Intent(this@MainActivity, CreateTaskActivity::class.java))
                 }
                 R.id.deleteList -> {}
             }
             true
         }
 
-
-
-//        pref = getSharedPreferences("TABLE", Context.MODE_PRIVATE)
-//        hLst = pref?.getString("hlst", "noData")!!
     }
 
     private fun initRcvLists(){
         mActBinding.apply {
             rcLists.layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
             rcLists.adapter = adapterList
-            val list1 = ListData(idOfList, "Star")
-            adapterList.AddList(list1)
-//                idOfList++
         }
     }
 
@@ -70,31 +73,8 @@ class MainActivity : AppCompatActivity() {
         mActBinding.apply {
             rcTasks.layoutManager = GridLayoutManager(this@MainActivity,1 )
             rcTasks.adapter = adapterTask
-//            btnAddList.setOnClickListener{
-////                val task1 = TaskData(true, "Buying", "Buy a car",
-////                "add info", L, Array
-////                )
-////                adapterTask.AddTask(task1)
-////                idOfTask++
-//                createTaskLauncher?.launch(Intent(this@MainActivity, CreateTaskActivity::class.java))
-//            }
         }
     }
-
-//
-//    fun saveData(hLst: String){
-//        val db_lst = pref?.edit()
-//        db_lst?.putString(hLst, hLst)
-//        db_lst?.apply()
-//    }
-//
-//    fun deleteItem(hLst: String){
-//        val db_lst = pref?.edit()
-//        db_lst?.remove(hLst)
-//        db_lst?.apply()
-//    }
-
-
 
 
 
