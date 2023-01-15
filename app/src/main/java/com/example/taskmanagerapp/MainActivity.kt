@@ -3,6 +3,7 @@ package com.example.taskmanagerapp
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -13,11 +14,11 @@ import com.example.taskmanagerapp.databinding.ActivityMainBinding
 import java.time.LocalDate
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask {
     lateinit var mActBinding : ActivityMainBinding
     private val adapterList = ListAdapter()
     private var idOfList = 1;
-    private val adapterTask = TaskAdapter()
+    private val adapterTask = TaskAdapter(this)
     private var idOfTask = 1;
     val Array = ArrayList<String>()
 
@@ -74,6 +75,10 @@ class MainActivity : AppCompatActivity() {
             rcTasks.layoutManager = GridLayoutManager(this@MainActivity,1 )
             rcTasks.adapter = adapterTask
         }
+    }
+
+    override fun clickTaskListener(task: TaskData) {
+        Toast.makeText(this, "go ${task.taskTitle}", Toast.LENGTH_LONG).show()
     }
 
 
