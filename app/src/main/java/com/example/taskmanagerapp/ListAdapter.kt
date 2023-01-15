@@ -7,12 +7,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskmanagerapp.databinding.ListItemBinding
 
-class ListAdapter : RecyclerView.Adapter<ListAdapter.ListHolder>() {
+class ListAdapter(val listener: InterfaceList) : RecyclerView.Adapter<ListAdapter.ListHolder>() {
     val ArrayOfLists = ArrayList<ListData>()
     class ListHolder(item: View) : RecyclerView.ViewHolder(item) {
         val binding = ListItemBinding.bind(item)
-        fun bind(list : ListData) = with(binding){
+        fun bind(list : ListData, listener: InterfaceList) = with(binding){
             ListText.text =  list.title
+            itemView.setOnClickListener{
+                listener.clickListListener(list)
+            }
         }
     }
 
@@ -22,7 +25,7 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.ListHolder>() {
     }
 
     override fun onBindViewHolder(holder: ListHolder, position: Int) {
-        holder.bind(ArrayOfLists[position])
+        holder.bind(ArrayOfLists[position], listener)
     }
 
     override fun getItemCount(): Int {
@@ -33,6 +36,12 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.ListHolder>() {
     fun AddList(list : ListData){
         ArrayOfLists.add(list)
         notifyDataSetChanged()
+    }
+
+    interface InterfaceList{
+        fun clickListListener(list : ListData){
+
+        }
     }
 
 }

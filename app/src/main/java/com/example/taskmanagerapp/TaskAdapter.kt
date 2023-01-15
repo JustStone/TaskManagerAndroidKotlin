@@ -45,6 +45,5 @@ class TaskAdapter(val listener: InterfaceTask) : RecyclerView.Adapter<TaskAdapte
         fun clickTaskListener(task : TaskData){
 
         }
-
     }
 }

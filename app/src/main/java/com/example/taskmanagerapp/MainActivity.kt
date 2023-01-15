@@ -14,9 +14,9 @@ import com.example.taskmanagerapp.databinding.ActivityMainBinding
 import java.time.LocalDate
 
 
-class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask {
+class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter.InterfaceList {
     lateinit var mActBinding : ActivityMainBinding
-    private val adapterList = ListAdapter()
+    private val adapterList = ListAdapter(this)
     private var idOfList = 1;
     private val adapterTask = TaskAdapter(this)
     private var idOfTask = 1;
@@ -79,6 +79,11 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask {
 
     override fun clickTaskListener(task: TaskData) {
         Toast.makeText(this, "go ${task.taskTitle}", Toast.LENGTH_LONG).show()
+    }
+
+    override fun clickListListener(list : ListData){
+        Toast.makeText(this, "go ${list.title}", Toast.LENGTH_LONG).show()
+
     }
 
 
