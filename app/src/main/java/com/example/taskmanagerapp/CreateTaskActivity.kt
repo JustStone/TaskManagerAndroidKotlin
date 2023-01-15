@@ -1,6 +1,9 @@
 package com.example.taskmanagerapp
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,7 +14,7 @@ import java.time.LocalDate
 
 class CreateTaskActivity : AppCompatActivity() {
     lateinit var createTaskActBinding : ActivityCreateTaskBinding
-
+    private var color = Color.YELLOW
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +34,19 @@ class CreateTaskActivity : AppCompatActivity() {
     }
 
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initButtons() = with(createTaskActBinding){
+        createTaskFavorBtn.setOnClickListener{
+            if(createTaskFavorBtn.text == "IMPORTANT") {
+                createTaskFavorBtn.text = "NOT IMPORTANT"
+                createTaskFavorBtn.backgroundTintList = ColorStateList.valueOf(0xAAAAAA)
+            }
+            else{
+                createTaskFavorBtn.text = "IMPORTANT"
+                createTaskFavorBtn.backgroundTintList = ColorStateList.valueOf(Color.YELLOW)
+            }
+        }
         createTaskSaveBtn.setOnClickListener {
             val task : TaskData
             if (createTaskFavorBtn.text == "IMPORTANT"){
@@ -41,7 +55,7 @@ class CreateTaskActivity : AppCompatActivity() {
                     "some",
                     createTaskTitle.text.toString(),
                     createTaskInfo.text.toString(),
-                    LocalDate.now(),
+                    "LocalDate.now()",
                     ArrayList<String>()
                 )
             }
@@ -51,7 +65,7 @@ class CreateTaskActivity : AppCompatActivity() {
                     "some",
                     createTaskTitle.text.toString(),
                     createTaskInfo.text.toString(),
-                    LocalDate.now(),
+                    "LocalDate.now()",
                     ArrayList<String>()
                 )
             }

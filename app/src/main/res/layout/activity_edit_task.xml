@@ -40,14 +40,13 @@
                 android:inputType="textPersonName"
                 android:minHeight="48dp" />
 
-            <EditText
-                android:id="@+id/createTaskDate"
+            <Button
+                android:id="@+id/createTaskDateBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Your Date"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
+                android:backgroundTint="#AAAAAA"
+                android:text="Add date"
+                android:textColor="#070606" />
 
             <Button
                 android:id="@+id/createTasksSubsBtn"
@@ -61,18 +60,36 @@
                 android:id="@+id/createTaskFavorBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#AAAAAA"
-                android:text="NOT IMPORTANT"
+                android:backgroundTint="#FFEB3B"
+                android:text="Important"
                 android:textColor="#0C0A0A" />
 
-            <Button
-                android:id="@+id/createTaskSaveBtn"
+            <LinearLayout
+                android:id="@+id/qg"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="#4CAF50"
-                android:text="Save"
-                android:textColor="#090606" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/createTaskSaveBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#4CAF50"
+                    android:text="Save"
+                    android:textColor="#090606" />
+
+                <Button
+                    android:id="@+id/createTaskDeleteBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="#E11010"
+                    android:text="Delete"
+                    android:textColor="#090606" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
