@@ -98,12 +98,17 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask{
                     arraySubtasks
                 )
             }
-            val createTaskIntent = Intent().apply {
-                putExtra("tp_task", task)
+
+            //+не добавлять существующие
+            if (createTaskTitle.text.toString().isNotEmpty()){
+                val createTaskIntent = Intent().apply {
+                    putExtra("tp_task", task)
+                }
+
+                setResult(RESULT_OK, createTaskIntent)
+                finish()
             }
 
-            setResult(RESULT_OK, createTaskIntent)
-            finish()
         }
     }
 

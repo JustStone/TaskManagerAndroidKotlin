@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
             }
         }
 
+        adapterList.AddList(ListData("IMPORTANT"))
         createListLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if(it.resultCode == RESULT_OK){
                 adapterList.AddList(it.data?.getSerializableExtra("tp_list" ) as ListData)
