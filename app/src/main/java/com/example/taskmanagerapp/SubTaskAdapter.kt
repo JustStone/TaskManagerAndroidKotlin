@@ -1,10 +1,12 @@
 package com.example.taskmanagerapp
 
 import android.annotation.SuppressLint
+import android.location.GnssAntennaInfo.Listener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.taskmanagerapp.databinding.SubtaskItemBinding
 import com.example.taskmanagerapp.databinding.TaskItemBinding
 
 class SubTaskAdapter : RecyclerView.Adapter<SubTaskAdapter.TaskHolder>() {
@@ -12,9 +14,11 @@ class SubTaskAdapter : RecyclerView.Adapter<SubTaskAdapter.TaskHolder>() {
 
     class TaskHolder(item: View) : RecyclerView.ViewHolder(item) {
         val binding = TaskItemBinding.bind(item)
+
         fun bind(task: TaskData) = with(binding) {
             taskTitle.text = task.taskTitle
         }
+
 
     }
 
@@ -36,4 +40,6 @@ class SubTaskAdapter : RecyclerView.Adapter<SubTaskAdapter.TaskHolder>() {
         ArrayOfTasks.add(task)
         notifyDataSetChanged()
     }
+
+
 }

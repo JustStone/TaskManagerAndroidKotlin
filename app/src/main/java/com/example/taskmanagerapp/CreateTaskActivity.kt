@@ -8,13 +8,14 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.taskmanagerapp.databinding.ActivityCreateTaskBinding
 
-class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask {
+class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask{
     lateinit var createTaskActBinding : ActivityCreateTaskBinding
-    private val adapterSubTask = SubTaskAdapter()
+    private val adapterSubTask = TaskAdapter(this)
     private var arraySubtasks = ArrayList<String>()
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -22,8 +23,10 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask {
         super.onCreate(savedInstanceState)
         createTaskActBinding = ActivityCreateTaskBinding.inflate(layoutInflater)
         setContentView(createTaskActBinding.root)
+
         initButtons()
         initRcvSubTasks()
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Create Task"
     }
@@ -39,7 +42,8 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask {
             rcSubTasks.adapter = adapterSubTask
             addSubtaskBtn.setOnClickListener{
                 if (titleSubtask.text.toString().isNotEmpty() &&
-                    !arraySubtasks.contains(titleSubtask.text.toString())){
+                    !arraySubtasks.contains(titleSubtask.text.toString())&&
+                    titleSubtask.text.toString().length <= 25){
                     val subTask = TaskData (
                         false,
                         "some",
@@ -50,12 +54,10 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask {
                     )
                     adapterSubTask.AddTask(subTask)
                     arraySubtasks.add(titleSubtask.text.toString())
-
                 }
-
-
-
             }
+
+
         }
     }
 
@@ -103,10 +105,10 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask {
             setResult(RESULT_OK, createTaskIntent)
             finish()
         }
+    }
 
-
-
-
+    override fun clickTaskListener(task : TaskData){
+        Toast.makeText(this, "go ${task.taskTitle}", Toast.LENGTH_LONG).show()
 
     }
 
