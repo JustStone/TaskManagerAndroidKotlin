@@ -7,19 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskmanagerapp.databinding.TaskItemBinding
 
-class TaskAdapter(val listener: MainActivity) : RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
+class SubTaskAdapter : RecyclerView.Adapter<SubTaskAdapter.TaskHolder>() {
     val ArrayOfTasks = ArrayList<TaskData>()
 
     class TaskHolder(item: View) : RecyclerView.ViewHolder(item) {
         val binding = TaskItemBinding.bind(item)
-        fun bind(task: TaskData, listener: InterfaceTask) = with(binding) {
+        fun bind(task: TaskData) = with(binding) {
             taskTitle.text = task.taskTitle
-            if (task.taskStar){
-                taskItemStar.visibility = View.VISIBLE
-            }
-            itemView.setOnClickListener{
-                listener.clickTaskListener(task)
-            }
         }
 
     }
@@ -30,7 +24,7 @@ class TaskAdapter(val listener: MainActivity) : RecyclerView.Adapter<TaskAdapter
     }
 
     override fun onBindViewHolder(holder: TaskHolder, position: Int) {
-        holder.bind(ArrayOfTasks[position], listener)
+        holder.bind(ArrayOfTasks[position])
     }
 
     override fun getItemCount(): Int {
@@ -41,11 +35,5 @@ class TaskAdapter(val listener: MainActivity) : RecyclerView.Adapter<TaskAdapter
     fun AddTask(task : TaskData){
         ArrayOfTasks.add(task)
         notifyDataSetChanged()
-    }
-
-    interface InterfaceTask{
-        fun clickTaskListener(task : TaskData){
-
-        }
     }
 }

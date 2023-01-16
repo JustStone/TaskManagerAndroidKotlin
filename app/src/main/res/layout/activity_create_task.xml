@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,6 +27,8 @@
                 android:id="@+id/createTaskTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:ems="10"
                 android:hint="Title"
                 android:inputType="textPersonName"
@@ -36,6 +38,8 @@
                 android:id="@+id/createTaskInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:ems="10"
                 android:hint="Information"
                 android:inputType="textPersonName"
@@ -45,31 +49,29 @@
                 android:id="@+id/createTaskDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:ems="10"
                 android:hint="Your Date"
                 android:inputType="textPersonName"
                 android:minHeight="48dp" />
 
             <Button
-                android:id="@+id/createTasksSubsBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#AAAAAA"
-                android:text="Go to subtasks"
-                android:textColor="#070606" />
-
-            <Button
                 android:id="@+id/createTaskFavorBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:backgroundTint="#AAAAAA"
                 android:text="NOT IMPORTANT"
-                android:textColor="#0C0A0A" />
+                android:textColor="#0C0A0A"
+                android:layout_marginRight="10dp" />
 
             <Button
                 android:id="@+id/createTaskSaveBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:backgroundTint="#4CAF50"
                 android:text="Save"
@@ -77,6 +79,70 @@
 
         </LinearLayout>
 
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/Hsubtasks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:shadowColor="#120F0F"
+                android:text="Subtasks"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/titleSubtask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:ems="10"
+                android:hint="Title of subtask"
+                android:inputType="textPersonName"
+                android:minHeight="48dp" />
+
+            <Button
+                android:id="@+id/addSubtaskBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:backgroundTint="#03A9F4"
+                android:text="Add subtask"
+                android:textColor="#090606" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcSubTasks"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintBottom_toTopOf="@+id/bottomMenu"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

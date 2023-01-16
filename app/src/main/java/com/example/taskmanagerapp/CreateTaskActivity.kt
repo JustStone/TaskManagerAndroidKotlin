@@ -9,12 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.taskmanagerapp.databinding.ActivityCreateTaskBinding
-import java.time.LocalDate
 
-class CreateTaskActivity : AppCompatActivity() {
+class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask {
     lateinit var createTaskActBinding : ActivityCreateTaskBinding
-    private var color = Color.YELLOW
+    private val adapterSubTask = SubTaskAdapter()
+    private var arraySubtasks = ArrayList<String>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,15 +23,40 @@ class CreateTaskActivity : AppCompatActivity() {
         createTaskActBinding = ActivityCreateTaskBinding.inflate(layoutInflater)
         setContentView(createTaskActBinding.root)
         initButtons()
+        initRcvSubTasks()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Create Task"
-
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == android.R.id.home) finish()
         return true
+    }
+
+    private fun initRcvSubTasks(){
+        createTaskActBinding.apply {
+            rcSubTasks.layoutManager = GridLayoutManager(this@CreateTaskActivity,1 )
+            rcSubTasks.adapter = adapterSubTask
+            addSubtaskBtn.setOnClickListener{
+                if (titleSubtask.text.toString().isNotEmpty() &&
+                    !arraySubtasks.contains(titleSubtask.text.toString())){
+                    val subTask = TaskData (
+                        false,
+                        "some",
+                        titleSubtask.text.toString(),
+                        createTaskInfo.text.toString(),
+                        "LocalDate.now()",
+                        arraySubtasks
+                    )
+                    adapterSubTask.AddTask(subTask)
+                    arraySubtasks.add(titleSubtask.text.toString())
+
+                }
+
+
+
+            }
+        }
     }
 
 
@@ -47,6 +73,7 @@ class CreateTaskActivity : AppCompatActivity() {
                 createTaskFavorBtn.backgroundTintList = ColorStateList.valueOf(Color.YELLOW)
             }
         }
+
         createTaskSaveBtn.setOnClickListener {
             val task : TaskData
             if (createTaskFavorBtn.text == "IMPORTANT"){
@@ -56,7 +83,7 @@ class CreateTaskActivity : AppCompatActivity() {
                     createTaskTitle.text.toString(),
                     createTaskInfo.text.toString(),
                     "LocalDate.now()",
-                    ArrayList<String>()
+                    arraySubtasks
                 )
             }
             else{
@@ -66,7 +93,7 @@ class CreateTaskActivity : AppCompatActivity() {
                     createTaskTitle.text.toString(),
                     createTaskInfo.text.toString(),
                     "LocalDate.now()",
-                    ArrayList<String>()
+                    arraySubtasks
                 )
             }
             val createTaskIntent = Intent().apply {
@@ -76,6 +103,10 @@ class CreateTaskActivity : AppCompatActivity() {
             setResult(RESULT_OK, createTaskIntent)
             finish()
         }
+
+
+
+
 
     }
 
