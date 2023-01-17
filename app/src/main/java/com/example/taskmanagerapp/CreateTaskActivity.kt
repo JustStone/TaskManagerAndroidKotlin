@@ -1,7 +1,9 @@
 package com.example.taskmanagerapp
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
@@ -18,6 +20,9 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask{
     private val adapterSubTask = TaskAdapter(this)
     private var arraySubtasks = ArrayList<String>()
 
+    private lateinit var preferences: SharedPreferences
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +34,10 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask{
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Create Task"
+
+        preferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -84,7 +93,7 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask{
                     "some",
                     createTaskTitle.text.toString(),
                     createTaskInfo.text.toString(),
-                    "LocalDate.now()",
+                    createTaskDate.text.toString(),
                     arraySubtasks
                 )
             }
@@ -94,7 +103,7 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask{
                     "some",
                     createTaskTitle.text.toString(),
                     createTaskInfo.text.toString(),
-                    "LocalDate.now()",
+                    createTaskDate.text.toString(),
                     arraySubtasks
                 )
             }

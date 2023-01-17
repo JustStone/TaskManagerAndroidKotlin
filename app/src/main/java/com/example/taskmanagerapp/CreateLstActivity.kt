@@ -1,6 +1,8 @@
 package com.example.taskmanagerapp
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +13,8 @@ import com.example.taskmanagerapp.databinding.ActivityCreateLstBinding
 
 class CreateLstActivity : AppCompatActivity() {
     lateinit var createLstActBinding : ActivityCreateLstBinding
+    private lateinit var preferences: SharedPreferences
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,14 +22,11 @@ class CreateLstActivity : AppCompatActivity() {
         createLstActBinding = ActivityCreateLstBinding.inflate(layoutInflater)
         setContentView(createLstActBinding.root)
 
+        preferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Create List"
-
-//        val clickedList = intent.getSerializableExtra("tp_click_list") as ListData
-//
-//        createLstActBinding.apply {
-//            newListText.setText(clickedList.title)
-//        }
 
         initButtons()
 
@@ -39,14 +40,28 @@ class CreateLstActivity : AppCompatActivity() {
 
     private fun initButtons() = with(createLstActBinding){
         createListBtn.setOnClickListener{
-            val list = ListData(newListText.text.toString())
+            if (!preferences.contains(PREF_LIST+" "+newListText.text.toString()) &&
+                    newListText.text.toString().isNotEmpty()){
 
-            val createListIntent = Intent().apply {
-                putExtra("tp_list", list)
+                //SHARED ------------------------------------------------------------
+                preferences.edit()
+                    .putString(PREF_LIST+" "+newListText.text.toString(), newListText.text.toString())
+                    .remove(CURRENT_LIST)
+                    .putString(CURRENT_LIST, newListText.text.toString())
+                    .apply()
+                //SHARED ------------------------------------------------------------
+
+                val list = ListData(newListText.text.toString())
+
+                val createListIntent = Intent().apply {
+                    putExtra("tp_list", list)
+                }
+
+                setResult(RESULT_OK, createListIntent)
+
+                finish()
             }
 
-            setResult(RESULT_OK, createListIntent)
-            finish()
         }
     }
 }
