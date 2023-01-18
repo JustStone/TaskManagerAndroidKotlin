@@ -46,8 +46,8 @@ class CreateLstActivity : AppCompatActivity() {
                 //SHARED ------------------------------------------------------------
                 preferences.edit()
                     .putString(PREF_LIST+" "+newListText.text.toString(), newListText.text.toString())
-                    .remove(CURRENT_LIST)
-                    .putString(CURRENT_LIST, newListText.text.toString())
+                    .remove(CURRENT_L)
+                    .putString(CURRENT_L, newListText.text.toString())
                     .apply()
                 //SHARED ------------------------------------------------------------
 

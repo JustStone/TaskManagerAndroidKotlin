@@ -17,24 +17,15 @@ import com.example.taskmanagerapp.databinding.ActivityMainBinding
 const val APP_PREFERENCES = "APP_PREFERENCES"
 const val PREF_TASK = "TASK"
 const val PREF_LIST = "LIST"
-const val CURRENT_LIST = "CURRENT_LIST"
-const val CURRENT_TASK = "CURRENT_TASK"
+const val CURRENT_L = "CURRENT_L"
+const val CURRENT_T = "CURRENT_T"
 
-
-
-
-fun countMatches(string: String, pattern: String): Int {
-    return string.split(pattern)
-        .dropLastWhile { it.isEmpty() }
-        .toTypedArray().size - 1
-}
 
 class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter.InterfaceList {
     lateinit var mActBinding : ActivityMainBinding
     private val adapterList = ListAdapter(this)
-    private var idOfList = 1;
     private val adapterTask = TaskAdapter(this)
-    private var idOfTask = 1;
+    val listsAlreadyExist = ArrayList<String>()
     val Array = ArrayList<String>()
 
     private var createTaskLauncher: ActivityResultLauncher<Intent>? = null
@@ -55,18 +46,36 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
         initRcvLists()
         initRcvTasks()
 
+
+
         createTaskLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if(it.resultCode == RESULT_OK){
                 adapterTask.AddTask(it.data?.getSerializableExtra("tp_task" ) as TaskData)
             }
         }
-        //SHARED ------------------------------------------------------------
-        adapterList.AddList(ListData("IMPORTANT"))
-        preferences.edit()
-            .putString("$PREF_LIST IMPORTANT", "IMPORTANT")
-            .putString(CURRENT_LIST, "IMPORTANT")
-            .apply()
-        //SHARED ------------------------------------------------------------
+
+        //IMPORTANT ADD ------------------------------------------------------------
+//        preferences.edit()
+//            .clear()
+//            .apply()
+
+        if (!preferences.contains("$PREF_LIST IMPORTANT")) {
+            preferences.edit()
+                .putString("$PREF_LIST IMPORTANT", "IMPORTANT")
+                .putString(CURRENT_L, "IMPORTANT")
+                .apply()
+        }
+        //IMPORTANT ADD ------------------------------------------------------------
+
+        //Draw  lists ------------------------------------------------------------
+
+        var arr_map = preferences.all
+        arr_map.forEach { entry ->
+            if (PREF_LIST in entry.key.toString()) {
+                adapterList.AddList(ListData(entry.value.toString()))
+            }
+        }
+        //Draw lists ------------------------------------------------------------
 
         createListLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if(it.resultCode == RESULT_OK){
@@ -108,13 +117,13 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
     }
 
     override fun clickListListener(list : ListData){
-        //SHARED ------------------------------------------------------------
+        //Change current list ------------------------------------------------------------
         preferences.edit()
-            .remove(CURRENT_LIST)
-            .putString(CURRENT_LIST, list.title)
+            .remove(CURRENT_L)
+            .putString(CURRENT_L, list.title)
             .apply()
-        //SHARED ------------------------------------------------------------
-        val cur = preferences.getString(CURRENT_LIST, "")
+        //Change current list ------------------------------------------------------------
+        val cur = preferences.getString(CURRENT_L, "")
         Toast.makeText(this, "Choosen $cur", Toast.LENGTH_LONG).show()
 
 
