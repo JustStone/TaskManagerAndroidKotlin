@@ -91,7 +91,17 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
                 R.id.addTask -> {
                     createTaskLauncher?.launch(Intent(this@MainActivity, CreateTaskActivity::class.java))
                 }
-                R.id.deleteList -> {}
+                R.id.deleteList -> {
+                    if (preferences.getString(CURRENT_L, "") != "IMPORTANT"){
+                        preferences.edit()
+                            .remove(PREF_LIST+" "+preferences.getString(CURRENT_L, ""))
+                            .apply()
+                        adapterList.DeleteList(ListData(preferences.getString(CURRENT_L, "").toString()))
+                    }
+                    else{
+                        Toast.makeText(this, "You cannot remove the base list", Toast.LENGTH_LONG).show()
+                    }
+                }
             }
             true
         }

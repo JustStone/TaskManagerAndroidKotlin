@@ -38,6 +38,12 @@ class ListAdapter(val listener: InterfaceList) : RecyclerView.Adapter<ListAdapte
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun DeleteList(list : ListData){
+        ArrayOfLists.remove(list)
+        notifyDataSetChanged()
+    }
+
     interface InterfaceList{
         fun clickListListener(list : ListData){
 
