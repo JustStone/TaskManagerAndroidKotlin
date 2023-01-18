@@ -158,6 +158,11 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
                                         arr[4]
                                     ))
                                 }
+                                if (arr[1] == preferences.getString(CURRENT_L, "")){
+                                    preferences.edit()
+                                        .remove(entry.key.toString())
+                                        .apply()
+                                }
                             }
                         }
                         //Clear  tasks ------------------------------------------------------------
