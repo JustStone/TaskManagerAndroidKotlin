@@ -94,10 +94,10 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask{
                     preferences.edit()
                         .putString(
                             PREF_TASK+" "+createTaskTitle.text.toString(),
-                            "IMPORTANT"+" "+
-                            preferences.getString(CURRENT_L,"").toString()+" "+
-                            createTaskTitle.text.toString()+" "+
-                            createTaskInfo.text.toString()+" "+
+                            "IMPORTANT"+"^"+
+                            preferences.getString(CURRENT_L,"").toString()+"^"+
+                            createTaskTitle.text.toString()+"^"+
+                            createTaskInfo.text.toString()+"^"+
                             createTaskDate.text.toString())
                         .apply()
                 }
@@ -105,10 +105,10 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask{
                     preferences.edit()
                         .putString(
                             PREF_TASK+" "+createTaskTitle.text.toString(),
-                            "NOTIMPORTANT"+" "+
-                            preferences.getString(CURRENT_L,"").toString()+" "+
-                            createTaskTitle.text.toString()+" "+
-                            createTaskInfo.text.toString()+" "+
+                            "NOTIMPORTANT"+"^"+
+                            preferences.getString(CURRENT_L,"").toString()+"^"+
+                            createTaskTitle.text.toString()+"^"+
+                            createTaskInfo.text.toString()+"^"+
                             createTaskDate.text.toString())
                         .apply()
                 }

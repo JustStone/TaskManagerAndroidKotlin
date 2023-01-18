@@ -70,15 +70,19 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
 //            .clear()
 //            .apply()
 
-        if (!preferences.contains("$PREF_LIST IMPORTANT")) {
+        if (!preferences.contains("$PREF_LIST Tasks")) {
             preferences.edit()
-                .putString("$PREF_LIST IMPORTANT", "IMPORTANT")
-                .putString(CURRENT_L, "IMPORTANT")
+//                .putString("$PREF_LIST Tasks", "Tasks")
+                .putString(CURRENT_L, "Tasks")
                 .apply()
         }
         //IMPORTANT ADD ------------------------------------------------------------
 
         //Draw  lists ------------------------------------------------------------
+
+        adapterList.AddList(ListData("IMPORTANT"))
+        adapterList.AddList(ListData("Tasks"))
+
 
         val allPrefs = preferences.all
         allPrefs.forEach { entry ->
@@ -89,11 +93,10 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
         //Draw lists ------------------------------------------------------------
 
         //Draw  tasks ------------------------------------------------------------
-
         val allPrefs2 = preferences.all
         allPrefs2.forEach { entry ->
             if (PREF_TASK in entry.key.toString()) {
-                val arr = entry.value.toString().split(" ")
+                val arr = entry.value.toString().split("^")
                 if (arr[0] == "IMPORTANT" && arr[1] == preferences.getString(CURRENT_L,"").toString()){
                     adapterTask.AddTask(TaskData(
                         true,
@@ -131,15 +134,68 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
                     createTaskLauncher?.launch(Intent(this@MainActivity, CreateTaskActivity::class.java))
                 }
                 R.id.deleteList -> {
-                    if (preferences.getString(CURRENT_L, "") != "IMPORTANT"){
+                    if (preferences.getString(CURRENT_L, "") != "IMPORTANT" && preferences.getString(CURRENT_L, "") != "Tasks"){
+                        //Clear  tasks ------------------------------------------------------------
+                        val allPrefs5 = preferences.all
+                        allPrefs5.forEach { entry ->
+                            if (PREF_TASK in entry.key.toString()) {
+                                val arr = entry.value.toString().split("^")
+                                if (arr[0] == "IMPORTANT"){
+                                    adapterTask.DeleteTask(TaskData(
+                                        true,
+                                        arr[1],
+                                        arr[2],
+                                        arr[3],
+                                        arr[4]
+                                    ))
+                                }
+                                else{
+                                    adapterTask.DeleteTask(TaskData(
+                                        false,
+                                        arr[1],
+                                        arr[2],
+                                        arr[3],
+                                        arr[4]
+                                    ))
+                                }
+                            }
+                        }
+                        //Clear  tasks ------------------------------------------------------------
                         preferences.edit()
                             .remove(PREF_LIST+" "+preferences.getString(CURRENT_L, ""))
                             .apply()
                         adapterList.DeleteList(ListData(preferences.getString(CURRENT_L, "").toString()))
                         preferences.edit()
                             .remove(CURRENT_L)
-                            .putString(CURRENT_L, "IMPORTANT")
+                            .putString(CURRENT_L, "Tasks")
                             .apply()
+                        //Draw  tasks ------------------------------------------------------------
+                        val allPrefs3 = preferences.all
+                        allPrefs3.forEach { entry ->
+                            if (PREF_TASK in entry.key.toString()) {
+                                val arr = entry.value.toString().split("^")
+                                if (arr[0] == "IMPORTANT" && arr[1] == preferences.getString(CURRENT_L,"").toString()){
+                                    adapterTask.AddTask(TaskData(
+                                        true,
+                                        arr[1],
+                                        arr[2],
+                                        arr[3],
+                                        arr[4]
+                                    ))
+                                }
+                                if (arr[0] == "NOTIMPORTANT"&& arr[1] == preferences.getString(CURRENT_L,"").toString()){
+                                    adapterTask.AddTask(TaskData(
+                                        false,
+                                        arr[1],
+                                        arr[2],
+                                        arr[3],
+                                        arr[4]
+                                    ))
+                                }
+                            }
+                        }
+                        //Draw  tasks ------------------------------------------------------------
+
                     }
                     else{
                         Toast.makeText(this, "You cannot remove the base list", Toast.LENGTH_LONG).show()
@@ -150,6 +206,11 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
         }
 
     }
+    //Clear tasks ------------------------------------------------------------
+    //Clear tasks ------------------------------------------------------------
+
+
+
 
     private fun initRcvLists(){
         mActBinding.apply {
@@ -178,17 +239,99 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
     }
 
     override fun clickListListener(list : ListData){
+        //Clear tasks ------------------------------------------------------------
+        val allPrefs4 = preferences.all
+        allPrefs4.forEach { entry ->
+            if (PREF_TASK in entry.key.toString()) {
+                val arr = entry.value.toString().split("^")
+                if (arr[0] == "IMPORTANT"){
+                    adapterTask.DeleteTask(TaskData(
+                        true,
+                        arr[1],
+                        arr[2],
+                        arr[3],
+                        arr[4]
+                    ))
+                }
+                else{
+                    adapterTask.DeleteTask(TaskData(
+                        false,
+                        arr[1],
+                        arr[2],
+                        arr[3],
+                        arr[4]
+                    ))
+                }
+            }
+        }
+        //Clear tasks ------------------------------------------------------------
+
+
         //Change current list ------------------------------------------------------------
-        preferences.edit()
-            .remove(CURRENT_L)
-            .putString(CURRENT_L, list.title)
-            .apply()
+        if (list.title != "IMPORTANT") {
+            preferences.edit()
+                .remove(CURRENT_L)
+                .putString(CURRENT_L, list.title)
+                .apply()
         //Change current list ------------------------------------------------------------
+
+        //Draw  tasks ------------------------------------------------------------
+            val allPrefs6 = preferences.all
+            allPrefs6.forEach { entry ->
+                if (PREF_TASK in entry.key.toString()) {
+                    val arr = entry.value.toString().split("^")
+                    if (arr[0] == "IMPORTANT" && arr[1] == preferences.getString(CURRENT_L,"").toString()){
+                        adapterTask.AddTask(TaskData(
+                            true,
+                            arr[1],
+                            arr[2],
+                            arr[3],
+                            arr[4]
+                        ))
+                    }
+                    if (arr[0] == "NOTIMPORTANT" && arr[1] == preferences.getString(CURRENT_L,"").toString()){
+                            adapterTask.AddTask(TaskData(
+                                false,
+                                arr[1],
+                                arr[2],
+                                arr[3],
+                                arr[4]
+                            ))
+                        }
+                }
+            }
+        //Draw  tasks ------------------------------------------------------------
+
+        }
+        else{
+//      выводим только избранные ----------------------
+            val allPrefs5 = preferences.all
+            allPrefs5.forEach { entry ->
+                if (PREF_TASK in entry.key.toString()) {
+                    val arr = entry.value.toString().split("^")
+                    if (arr[0] == "IMPORTANT"){
+                        adapterTask.AddTask(TaskData(
+                            true,
+                            arr[1],
+                            arr[2],
+                            arr[3],
+                            arr[4]
+                        ))
+                    }
+                }
+            }
+        }
+
+        //Change current list ------------------------------------------------------------
+
+
+
+
+
         val cur = preferences.getString(CURRENT_L, "")
         Toast.makeText(this, "Choosen $cur", Toast.LENGTH_LONG).show()
 
-
-    }
+        }
 
 
 

@@ -17,6 +17,9 @@ class TaskAdapter(val listener: InterfaceTask) : RecyclerView.Adapter<TaskAdapte
             if (task.taskStar){
                 taskItemStar.visibility = View.VISIBLE
             }
+            else{
+                taskItemStar.visibility = View.INVISIBLE
+            }
             itemView.setOnClickListener{
                 listener.clickTaskListener(task)
             }
