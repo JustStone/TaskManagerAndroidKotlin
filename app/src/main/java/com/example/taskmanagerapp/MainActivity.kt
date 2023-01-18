@@ -17,8 +17,19 @@ import com.example.taskmanagerapp.databinding.ActivityMainBinding
 const val APP_PREFERENCES = "APP_PREFERENCES"
 const val PREF_TASK = "TASK"
 const val PREF_LIST = "LIST"
+const val PREF_SUBT = "SUBT"
 const val CURRENT_L = "CURRENT_L"
 const val CURRENT_T = "CURRENT_T"
+
+const val TASKSTAR = "TASKSTAR"
+const val TASKLST = "TASKLST"
+const val TASKTITLE = "TASKTITLE"
+const val TASKINFO = "TASKINFO"
+const val TASKDATE = "TASKDATE"
+
+
+
+
 
 
 class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter.InterfaceList {
@@ -69,13 +80,41 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
 
         //Draw  lists ------------------------------------------------------------
 
-        var arr_map = preferences.all
-        arr_map.forEach { entry ->
+        val allPrefs = preferences.all
+        allPrefs.forEach { entry ->
             if (PREF_LIST in entry.key.toString()) {
                 adapterList.AddList(ListData(entry.value.toString()))
             }
         }
         //Draw lists ------------------------------------------------------------
+
+        //Draw  tasks ------------------------------------------------------------
+
+        val allPrefs2 = preferences.all
+        allPrefs2.forEach { entry ->
+            if (PREF_TASK in entry.key.toString()) {
+                val arr = entry.value.toString().split(" ")
+                if (arr[0] == "IMPORTANT" && arr[1] == preferences.getString(CURRENT_L,"").toString()){
+                    adapterTask.AddTask(TaskData(
+                        true,
+                        arr[1],
+                        arr[2],
+                        arr[3],
+                        arr[4]
+                    ))
+                }
+                if (arr[0] == "NOTIMPORTANT"&& arr[1] == preferences.getString(CURRENT_L,"").toString()){
+                    adapterTask.AddTask(TaskData(
+                        false,
+                        arr[1],
+                        arr[2],
+                        arr[3],
+                        arr[4]
+                    ))
+                }
+            }
+        }
+        //Draw tasks ------------------------------------------------------------
 
         createListLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if(it.resultCode == RESULT_OK){
@@ -97,6 +136,10 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
                             .remove(PREF_LIST+" "+preferences.getString(CURRENT_L, ""))
                             .apply()
                         adapterList.DeleteList(ListData(preferences.getString(CURRENT_L, "").toString()))
+                        preferences.edit()
+                            .remove(CURRENT_L)
+                            .putString(CURRENT_L, "IMPORTANT")
+                            .apply()
                     }
                     else{
                         Toast.makeText(this, "You cannot remove the base list", Toast.LENGTH_LONG).show()
@@ -123,7 +166,15 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
     }
 
     override fun clickTaskListener(task: TaskData) {
-        Toast.makeText(this, "go ${task.taskTitle}", Toast.LENGTH_LONG).show()
+        //Change current task ------------------------------------------------------------
+        if (preferences.contains(CURRENT_T)){
+            preferences.edit()
+                .remove(CURRENT_T)
+                .putString(CURRENT_T, task.taskTitle)
+                .apply()
+        }
+//        Change current task ------------------------------------------------------------
+        Toast.makeText(this, task.taskTitle, Toast.LENGTH_LONG).show()
     }
 
     override fun clickListListener(list : ListData){

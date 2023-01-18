@@ -10,5 +10,4 @@ data class TaskData(
     val taskTitle: String,
     val taskInfo: String,
     val taskTime: String,
-    val taskTasks: ArrayList<String>
 ) : Serializable

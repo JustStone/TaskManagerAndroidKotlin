@@ -59,7 +59,6 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask{
                         titleSubtask.text.toString(),
                         createTaskInfo.text.toString(),
                         "LocalDate.now()",
-                        arraySubtasks
                     )
                     adapterSubTask.AddTask(subTask)
                     arraySubtasks.add(titleSubtask.text.toString())
@@ -86,30 +85,64 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask{
         }
 
         createTaskSaveBtn.setOnClickListener {
-            val task : TaskData
-            if (createTaskFavorBtn.text == "IMPORTANT"){
-                task = TaskData (
-                    true,
-                    "some",
-                    createTaskTitle.text.toString(),
-                    createTaskInfo.text.toString(),
-                    createTaskDate.text.toString(),
-                    arraySubtasks
-                )
-            }
-            else{
-                task = TaskData (
-                    false,
-                    "some",
-                    createTaskTitle.text.toString(),
-                    createTaskInfo.text.toString(),
-                    createTaskDate.text.toString(),
-                    arraySubtasks
-                )
-            }
+            if (createTaskTitle.text.toString().isNotEmpty() &&
+                createTaskTitle.text.toString().length <= 30 &&
+                !preferences.contains(PREF_TASK+" "+createTaskTitle.text.toString()))
+            {
+                //SAVE TASK ------------------------------------------------------------
+                if (createTaskFavorBtn.text.toString() == "IMPORTANT") {
+                    preferences.edit()
+                        .putString(
+                            PREF_TASK+" "+createTaskTitle.text.toString(),
+                            "IMPORTANT"+" "+
+                            preferences.getString(CURRENT_L,"").toString()+" "+
+                            createTaskTitle.text.toString()+" "+
+                            createTaskInfo.text.toString()+" "+
+                            createTaskDate.text.toString())
+                        .apply()
+                }
+                else{
+                    preferences.edit()
+                        .putString(
+                            PREF_TASK+" "+createTaskTitle.text.toString(),
+                            "NOTIMPORTANT"+" "+
+                            preferences.getString(CURRENT_L,"").toString()+" "+
+                            createTaskTitle.text.toString()+" "+
+                            createTaskInfo.text.toString()+" "+
+                            createTaskDate.text.toString())
+                        .apply()
+                }
 
-            //+не добавлять существующие
-            if (createTaskTitle.text.toString().isNotEmpty()){
+
+//                    .putString(PREF_TASK+" "+createTaskTitle.text.toString()+" "+TASKTITLE, createTaskTitle.text.toString())
+//                    .putBoolean(PREF_TASK+" "+createTaskTitle.text.toString()+" "+TASKSTAR, createTaskFavorBtn.text == "IMPORTANT")
+//                    .putString(PREF_TASK+" "+createTaskTitle.text.toString()+" "+TASKLST, preferences.getString(CURRENT_L,"").toString())
+//                    .putString(PREF_TASK+" "+createTaskTitle.text.toString()+" "+TASKINFO, createTaskInfo.text.toString())
+//                    .putString(PREF_TASK+" "+createTaskTitle.text.toString()+" "+TASKDATE, createTaskDate.text.toString())
+                //SAVE TASK ------------------------------------------------------------
+                val task : TaskData
+                if (createTaskFavorBtn.text == "IMPORTANT"){
+                    task = TaskData (
+                        true,
+                        preferences.getString(CURRENT_L,"").toString(),
+                        createTaskTitle.text.toString(),
+                        createTaskInfo.text.toString(),
+                        createTaskDate.text.toString(),
+                    )
+                }
+                else{
+                    task = TaskData (
+                        false,
+                        preferences.getString(CURRENT_L,"").toString(),
+                        createTaskTitle.text.toString(),
+                        createTaskInfo.text.toString(),
+                        createTaskDate.text.toString(),
+                    )
+                }
+
+                //+не добавлять существующие
+
+
                 val createTaskIntent = Intent().apply {
                     putExtra("tp_task", task)
                 }
@@ -118,11 +151,13 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask{
                 finish()
             }
 
+
+
         }
     }
 
     override fun clickTaskListener(task : TaskData){
-        Toast.makeText(this, "go ${task.taskTitle}", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "goz ${task.taskTitle}", Toast.LENGTH_LONG).show()
 
     }
 

@@ -41,15 +41,16 @@ class CreateLstActivity : AppCompatActivity() {
     private fun initButtons() = with(createLstActBinding){
         createListBtn.setOnClickListener{
             if (!preferences.contains(PREF_LIST+" "+newListText.text.toString()) &&
-                    newListText.text.toString().isNotEmpty()){
+                newListText.text.toString().isNotEmpty() &&
+                newListText.text.toString().length <= 20){
 
-                //SHARED ------------------------------------------------------------
+                //SAVE LIST ------------------------------------------------------------
                 preferences.edit()
                     .putString(PREF_LIST+" "+newListText.text.toString(), newListText.text.toString())
                     .remove(CURRENT_L)
                     .putString(CURRENT_L, newListText.text.toString())
                     .apply()
-                //SHARED ------------------------------------------------------------
+                //SAVE LIST ------------------------------------------------------------
 
                 val list = ListData(newListText.text.toString())
 

@@ -43,6 +43,12 @@ class TaskAdapter(val listener: InterfaceTask) : RecyclerView.Adapter<TaskAdapte
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun DeleteTask(task : TaskData){
+        ArrayOfTasks.remove(task)
+        notifyDataSetChanged()
+    }
+
     interface InterfaceTask{
         fun clickTaskListener(task : TaskData){
 
