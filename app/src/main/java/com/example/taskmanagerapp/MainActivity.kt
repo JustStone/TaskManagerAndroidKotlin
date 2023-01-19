@@ -20,6 +20,8 @@ const val PREF_LIST = "LIST"
 const val PREF_SUBT = "SUBT"
 const val CURRENT_L = "CURRENT_L"
 const val CURRENT_T = "CURRENT_T"
+const val TED = "TED"
+const val POINT = "POINT"
 
 const val TASKSTAR = "TASKSTAR"
 const val TASKLST = "TASKLST"
@@ -65,6 +67,18 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
             }
         }
 
+        if (!preferences.contains(TED)){
+            preferences.edit()
+                .putString(TED, "0")
+                .apply()
+        }
+        if (!preferences.contains(POINT)){
+            preferences.edit()
+                .putString(POINT, "0")
+                .apply()
+        }
+
+
         //IMPORTANT ADD ------------------------------------------------------------
 //        preferences.edit()
 //            .clear()
@@ -77,6 +91,9 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
                 .apply()
         }
         //IMPORTANT ADD ------------------------------------------------------------
+
+        //Clear  tasks ------------------------------------------------------------
+        //Clear  tasks ------------------------------------------------------------
 
         //Draw  lists ------------------------------------------------------------
 
@@ -131,6 +148,10 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
                     createListLauncher?.launch(Intent(this@MainActivity, CreateLstActivity::class.java))
                 }
                 R.id.addTask -> {
+                    preferences.edit()
+                        .remove(TED)
+                        .putString(TED, "0")
+                        .apply()
                     createTaskLauncher?.launch(Intent(this@MainActivity, CreateTaskActivity::class.java))
                 }
                 R.id.deleteList -> {
@@ -239,8 +260,22 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
                 .putString(CURRENT_T, task.taskTitle)
                 .apply()
         }
-//        Change current task ------------------------------------------------------------
+        else{
+            preferences.edit()
+                .putString(CURRENT_T, task.taskTitle)
+                .apply()
+        }
         Toast.makeText(this, task.taskTitle, Toast.LENGTH_LONG).show()
+
+//        Change current task ------------------------------------------------------------
+
+        preferences.edit()
+            .remove(TED)
+            .putString(TED, "1")
+            .apply()
+
+        val perehodNaEdit = Intent(this, CreateTaskActivity::class.java)
+        startActivity(perehodNaEdit)
     }
 
     override fun clickListListener(list : ListData){
@@ -329,10 +364,6 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
 
         //Change current list ------------------------------------------------------------
 
-
-
-
-
         val cur = preferences.getString(CURRENT_L, "")
         Toast.makeText(this, "Choosen $cur", Toast.LENGTH_LONG).show()
 
@@ -348,14 +379,100 @@ class MainActivity : AppCompatActivity(), TaskAdapter.InterfaceTask, ListAdapter
 
     override fun onStart() {
         super.onStart()
+
     }
 
     override fun onResume() {
         super.onResume()
+//        if (preferences.getString(POINT,"") == "1"){
+            //Clear tasks ------------------------------------------------------------
+            val allPrefs7 = preferences.all
+            allPrefs7.forEach { entry ->
+                if (PREF_TASK in entry.key.toString()) {
+                    val arr = entry.value.toString().split("^")
+                    if (arr[0] == "IMPORTANT"){
+                        adapterTask.DeleteTask(TaskData(
+                            true,
+                            arr[1],
+                            arr[2],
+                            arr[3],
+                            arr[4]
+                        ))
+                    }
+                    else{
+                        adapterTask.DeleteTask(TaskData(
+                            false,
+                            arr[1],
+                            arr[2],
+                            arr[3],
+                            arr[4]
+                        ))
+                    }
+                }
+            }
+            //Clear tasks ------------------------------------------------------------
+            //Draw  tasks ------------------------------------------------------------
+            val allPrefs6 = preferences.all
+            allPrefs6.forEach { entry ->
+                if (PREF_TASK in entry.key.toString()) {
+                    val arr = entry.value.toString().split("^")
+                    if (arr[0] == "IMPORTANT" && arr[1] == preferences.getString(CURRENT_L,"").toString()){
+                        adapterTask.AddTask(TaskData(
+                            true,
+                            arr[1],
+                            arr[2],
+                            arr[3],
+                            arr[4]
+                        ))
+                    }
+                    if (arr[0] == "NOTIMPORTANT" && arr[1] == preferences.getString(CURRENT_L,"").toString()){
+                        adapterTask.AddTask(TaskData(
+                            false,
+                            arr[1],
+                            arr[2],
+                            arr[3],
+                            arr[4]
+                        ))
+                    }
+                }
+            }
+            //Draw  tasks ------------------------------------------------------------
+            preferences.edit()
+                .remove(POINT)
+                .putString(POINT, "0")
+                .apply()
+        //}
+
     }
 
     override fun onPause() {
         super.onPause()
+        //Clear tasks ------------------------------------------------------------
+        val allPrefs7 = preferences.all
+        allPrefs7.forEach { entry ->
+            if (PREF_TASK in entry.key.toString()) {
+                val arr = entry.value.toString().split("^")
+                if (arr[0] == "IMPORTANT"){
+                    adapterTask.DeleteTask(TaskData(
+                        true,
+                        arr[1],
+                        arr[2],
+                        arr[3],
+                        arr[4]
+                    ))
+                }
+                else{
+                    adapterTask.DeleteTask(TaskData(
+                        false,
+                        arr[1],
+                        arr[2],
+                        arr[3],
+                        arr[4]
+                    ))
+                }
+            }
+        }
+        //Clear tasks ------------------------------------------------------------
     }
 
     override fun onDestroy() {

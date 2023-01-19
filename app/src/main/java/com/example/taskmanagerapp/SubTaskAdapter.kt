@@ -40,6 +40,12 @@ class SubTaskAdapter : RecyclerView.Adapter<SubTaskAdapter.TaskHolder>() {
         ArrayOfTasks.add(task)
         notifyDataSetChanged()
     }
+    
+    @SuppressLint("NotifyDataSetChanged")
+    fun DeleteTask(task : TaskData){
+        ArrayOfTasks.remove(task)
+        notifyDataSetChanged()
+    }
 
 
 }

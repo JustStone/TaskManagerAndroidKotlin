@@ -18,6 +18,7 @@ import com.example.taskmanagerapp.databinding.ActivityCreateTaskBinding
 class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask{
     lateinit var createTaskActBinding : ActivityCreateTaskBinding
     private val adapterSubTask = TaskAdapter(this)
+
     private var arraySubtasks = ArrayList<String>()
 
     private lateinit var preferences: SharedPreferences
@@ -36,6 +37,23 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask{
         supportActionBar?.title = "Create Task"
 
         preferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+
+        if (preferences.getString(TED, "") == "1"){
+            var temp = preferences.getString("$PREF_TASK ${preferences.getString(CURRENT_T,"")}", "")
+            val ara = temp?.split("^")
+            if(ara?.get(0).toString() != "IMPORTANT") {
+                createTaskActBinding.createTaskFavorBtn.text = "NOT IMPORTANT"
+                createTaskActBinding.createTaskFavorBtn.backgroundTintList = ColorStateList.valueOf(0xAAAAAA)
+            }
+            else{
+                createTaskActBinding.createTaskFavorBtn.text = "IMPORTANT"
+                createTaskActBinding.createTaskFavorBtn.backgroundTintList = ColorStateList.valueOf(Color.YELLOW)
+            }
+            createTaskActBinding.createTaskTitle.setText(ara?.get(2).toString())
+            createTaskActBinding.createTaskInfo.setText(ara?.get(3).toString())
+            createTaskActBinding.createTaskDate.setText(ara?.get(4).toString())
+
+        }
 
 
     }
@@ -84,11 +102,26 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask{
             }
         }
 
+        createTaskDeleteBtn.setOnClickListener{
+            preferences.edit()
+                .remove("$PREF_TASK ${preferences.getString(CURRENT_T,"")}")
+                .apply()
+            finish()
+
+
+        }
+
         createTaskSaveBtn.setOnClickListener {
             if (createTaskTitle.text.toString().isNotEmpty() &&
                 createTaskTitle.text.toString().length <= 30 &&
-                !preferences.contains(PREF_TASK+" "+createTaskTitle.text.toString()))
+                (!preferences.contains(PREF_TASK+" "+createTaskTitle.text.toString()) or
+                        (preferences.getString(TED, "") == "1")))
             {
+                if(preferences.getString(TED, "") == "1"){
+                    preferences.edit()
+                        .remove("$PREF_TASK ${preferences.getString(CURRENT_T,"")}")
+                        .apply()
+                }
                 //SAVE TASK ------------------------------------------------------------
                 if (createTaskFavorBtn.text.toString() == "IMPORTANT") {
                     preferences.edit()
@@ -112,13 +145,6 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask{
                             createTaskDate.text.toString())
                         .apply()
                 }
-
-
-//                    .putString(PREF_TASK+" "+createTaskTitle.text.toString()+" "+TASKTITLE, createTaskTitle.text.toString())
-//                    .putBoolean(PREF_TASK+" "+createTaskTitle.text.toString()+" "+TASKSTAR, createTaskFavorBtn.text == "IMPORTANT")
-//                    .putString(PREF_TASK+" "+createTaskTitle.text.toString()+" "+TASKLST, preferences.getString(CURRENT_L,"").toString())
-//                    .putString(PREF_TASK+" "+createTaskTitle.text.toString()+" "+TASKINFO, createTaskInfo.text.toString())
-//                    .putString(PREF_TASK+" "+createTaskTitle.text.toString()+" "+TASKDATE, createTaskDate.text.toString())
                 //SAVE TASK ------------------------------------------------------------
                 val task : TaskData
                 if (createTaskFavorBtn.text == "IMPORTANT"){
@@ -143,16 +169,16 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask{
                 //+не добавлять существующие
 
 
+
+
                 val createTaskIntent = Intent().apply {
                     putExtra("tp_task", task)
                 }
 
+
                 setResult(RESULT_OK, createTaskIntent)
                 finish()
             }
-
-
-
         }
     }
 
