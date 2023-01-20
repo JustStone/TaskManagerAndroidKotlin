@@ -39,7 +39,7 @@ class CreateTaskActivity : AppCompatActivity(), TaskAdapter.InterfaceTask{
         preferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
 
         if (preferences.getString(TED, "") == "1"){
-            var temp = preferences.getString("$PREF_TASK ${preferences.getString(CURRENT_T,"")}", "")
+            val temp = preferences.getString("$PREF_TASK ${preferences.getString(CURRENT_T,"")}", "")
             val ara = temp?.split("^")
             if(ara?.get(0).toString() != "IMPORTANT") {
                 createTaskActBinding.createTaskFavorBtn.text = "NOT IMPORTANT"
